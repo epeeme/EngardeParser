@@ -16,7 +16,16 @@ require '../engardeParser.php';
 $e = new EngardeParser($engardeResultsURL);
 ```
 
-* `parseTitle()`: returns the text between <title></title>
-* `getMetaData()`: returns an array of applicable <meta> data
-* `parseHeaderBlock()`: returns an array of data extracted from the <h1> block
+* `parseTitle()`: returns the text between TITLE tag
+* `getMetaData()`: returns an array of applicable META data
 
+* `parseGenerator()`: returns the META Generator value
+* `parseProgId()`: returns the META ProgId value
+* `parseOriginator()`: returns the META Originator value
+
+* `parseHeaderBlock()`: returns an array of data extracted from the H1 block
+
+* `getEngardePage()`: returns the raw HTML from the engardeResultsURL
+
+* `getAllResults()`: returns an array containing all the results
+```
