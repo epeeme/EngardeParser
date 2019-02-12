@@ -385,4 +385,28 @@ class EngardeFormatter extends EngardeParser
         }
         fclose($fp);
     }
+
+    public function getAllResultsJSON()
+    {
+        $allResultsArray = $this->getAllResults();
+
+        // Handles names and clubs with accents correctly
+        header('Content-Type: text/html; charset=utf-8');
+        
+        header('Content-Type: application/json');
+        $jsonMainArray = array();
+        $jsonArrayRank = array('Rank'=> '', 'Fencer' => array());
+        $jsonArrayFencer = array('Surname'=> '', 'Forename' => '', 'Club' => '', 'Country' => '');
+        foreach ($allResultsArray as $value) {
+            $jsonArrayFencer['Surname'] = $value[1];
+            $jsonArrayFencer['Forename'] = $value[2];
+            $jsonArrayFencer['Club'] = $value[3];
+            $jsonArrayFencer['Country'] = $value[4];            
+            $jsonArrayRank['Rank'] = $value[0];
+            $jsonArrayRank['Fencer'] = $jsonArrayFencer;
+
+            array_push($jsonMainArray, $jsonArrayRank);
+        }
+        echo json_encode($jsonMainArray);
+    }
 }
