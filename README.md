@@ -1,4 +1,4 @@
-#engardeParser
+engardeParser
 ==========
 
 engardeParser extracts the results data from every conceivable version of 
