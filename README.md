@@ -28,6 +28,13 @@ $e = new EngardeParser($engardeResultsURL);
 * `getAllResults()`: returns a parsed array containing all the results
 
 ``` php
+array('Rank', 'Surname', 'Forename', 'Club', 'Country')
+```
+
+The class can also be extended to allow for the results to be returned
+in a variety of formats.
+
+``` php
 <?php
 
 namespace engarde;
