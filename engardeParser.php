@@ -3,13 +3,15 @@
 /**
  * Engarde Parser
  * 
- * Extract the results data from every conceivable version of engarde and output in a 
+ * Extract the results data from every conceivable version of engarde and outputs in a 
  * variety of formats.
  * 
  * @author  Dan Kew <dan@epee.me>
  * @license http://opensource.org/licenses/gpl-3.0 GNU General Public License, version 3 (GPLv3)
  * @version v1.0.0
  */
+
+namespace engarde;
 
 class EngardeParser
 {
@@ -384,30 +386,3 @@ class EngardeFormatter extends EngardeParser
         fclose($fp);
     }
 }
-
-$e = new EngardeFormatter('http://www.engarde-service.com/files/leonpaulfencingcentre/lpjslonsabre18/u13_girls/clasfinal.htm');
-
-$e->getAllResultsCSV();
-
-// $e = new EngardeParser('https://web.archive.org/web/20050413025312/http://www.britishfencing.com/Men%27s%20epee.htm');
-/* $headerInfo = $e->parseHeaderBlock();
-
-/*print "<h3>Title</h3>";
-print $e->parseTitle();
-
-print "<h3>Meta Data</h3>";
-$meta = $e->getMetaData();
-print "Generator : ".$meta['Generator']."<BR>";
-print "ProgId : ".$meta['ProgId']."<BR>";
-print "Originator : ".$meta['Originator']."<BR>";
-
-print "<h3>Header</h3>";
-for ($i=0; $i<count($headerInfo); $i++) {
-    print $headerInfo[$i]."<br>";
-}
-
-print_r($e->getAllResults()); */
-
-exit;
-
-?>
