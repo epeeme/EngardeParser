@@ -44,3 +44,5 @@ $e = new EngardeFormatter($engardeResultsURL);
 ```
 
 * `getAllResultsCSV()`: returns a CSV formatted file of all the results
+* `getAllResultsJSON()`: returns a JSON formatted representation of all the results
+
