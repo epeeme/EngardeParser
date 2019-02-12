@@ -2,7 +2,7 @@ engardeParser
 ==========
 
 engardeParser extracts the results data from every conceivable version of 
-engarde software HTML output and parses into a variety of formats.
+the engarde software HTML output and parses into a variety of formats.
 
 Usage
 -----
