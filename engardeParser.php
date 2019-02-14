@@ -6,6 +6,8 @@
  * Extract the results data from every conceivable version of engarde and outputs in a 
  * variety of formats.
  * 
+ * Oldest engarde file found (2002) - http://www.one4all.plus.com/hwo2002we.htm
+ * 
  * @author  Dan Kew <dan@epee.me>
  * @license http://opensource.org/licenses/gpl-3.0 GNU General Public License, version 3 (GPLv3)
  * @version v1.0.0
@@ -37,10 +39,11 @@ class EngardeParser
     // All the values used to identify the text in the engarde table header
     private $_rankArray = array("Rank", "Ranking", "Rnk", "Rg", "Cl.");
     private $_surnameArray = array("Name", "Surname", "Nom", "Apellido-nom");
-    private $_forenameArray = array("First name", "Prénom", "Nombre");
+    private $_forenameArray = array("First name", "Prénom", "Nombre", "First", "First  name");
     private $_clubArray = array("Club", "Egyesület");
     private $_countryArray = array("Country");
 
+    private $_olderVersion = 0;
     /**
      * Initialize the class and set its properties.
      * 
@@ -150,7 +153,16 @@ class EngardeParser
         if (!(isset($this->_resultsBody))) {
             $this->_prepareResultsData();
         }
-        $tableRows = explode('<tr', $this->_resultsBody);
+        //$tableRows = explode('<tr', $this->_resultsBody);
+        // Use regx as explode does not handle case sensitivity
+        $tableRows = preg_split("/<tr/i", $this->_resultsBody);
+
+        // Older versions use <td and not <th and also spill onto multiple lines
+        // This fixes that and ensure we parse the header correctly.
+        if (strpos($tableRows[1], '<td') > 0) {            
+            $tableRows[1] = str_replace("<td", "\n<td", str_replace(array("\n", "\r"), "", $tableRows[1]));
+            $this->_olderVersion = 1;
+        }
 
         // First index removed as that's the residue of the <tr>
         $this->_resultsHeader = array_slice(array_map('trim', explode(PHP_EOL, str_replace('&nbsp;', '', strip_tags($tableRows[1])))), 1);
@@ -177,6 +189,7 @@ class EngardeParser
             }
             $i++;
         }
+
         return $i<count($this->_resultsHeader) ? $i : -1;
     }
 
@@ -211,9 +224,14 @@ class EngardeParser
         
         $this->_prepareResultsTableHeaderIndexes();
 
-        $tableRows = array_slice(explode('<tr', $this->_resultsBody), 2);
+        $tableRows = array_slice(preg_split("/<tr/i", $this->_resultsBody), 2);
 
         for ($i=0; $i < count($tableRows); $i++ ) {
+            // Older versions use <td and not <th and also spill onto multiple lines
+            // This fixes that and ensure we parse the results correctly.
+            if ($this->_olderVersion == 1) {            
+                $tableRows[$i] = str_replace("<td", "\n<td", str_replace(array("\n", "\r"), "", $tableRows[$i]));
+            }
             $tempArray = array_slice(array_map('trim', explode(PHP_EOL, str_replace('&nbsp;', '', strip_tags($tableRows[$i])))),1);
             $rank = $this->_rankingIndex <> -1 ? $tempArray[$this->_rankingIndex] : '';
             $surname = $this->_surnameIndex <> -1 ? $tempArray[$this->_surnameIndex] : '';
@@ -394,6 +412,10 @@ class EngardeFormatter extends EngardeParser
         header('Content-Type: text/html; charset=utf-8');
         
         header('Content-Type: application/json');
+        
+        // JSON manipulation that I'm no happy with
+        
+        /*
         $jsonMainArray = array();
         $jsonArrayRank = array('Rank'=> '', 'Fencer' => array());
         $jsonArrayFencer = array('Surname'=> '', 'Forename' => '', 'Club' => '', 'Country' => '');
@@ -407,6 +429,7 @@ class EngardeFormatter extends EngardeParser
 
             array_push($jsonMainArray, $jsonArrayRank);
         }
-        echo json_encode($jsonMainArray);
+        */
+        echo json_encode($allResultsArray);
     }
 }
