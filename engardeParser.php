@@ -413,23 +413,18 @@ class EngardeFormatter extends EngardeParser
         
         header('Content-Type: application/json');
         
-        // JSON manipulation that I'm no happy with
-        
-        /*
-        $jsonMainArray = array();
-        $jsonArrayRank = array('Rank'=> '', 'Fencer' => array());
-        $jsonArrayFencer = array('Surname'=> '', 'Forename' => '', 'Club' => '', 'Country' => '');
-        foreach ($allResultsArray as $value) {
-            $jsonArrayFencer['Surname'] = $value[1];
-            $jsonArrayFencer['Forename'] = $value[2];
-            $jsonArrayFencer['Club'] = $value[3];
-            $jsonArrayFencer['Country'] = $value[4];            
-            $jsonArrayRank['Rank'] = $value[0];
-            $jsonArrayRank['Fencer'] = $jsonArrayFencer;
-
-            array_push($jsonMainArray, $jsonArrayRank);
-        }
-        */
         echo json_encode($allResultsArray);
     }
+}
+
+class EngardeEventParser extends EngardeParser
+{
+    // http://www.engarde-service.com/files/leonpaulfencingcentre/lpjslonepee19/
+
+    // This is a <ul><li> based list so we can extract that easily into an array
+    // the link the results page is a simple <a href="uxx"> affair
+    // so that can be added to the base URl above and then the standard parser
+    // can deal with any framset stuff
+
+
 }

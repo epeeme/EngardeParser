@@ -6,7 +6,7 @@ namespace engarde;
 
 require '../engardeParser.php';
 
-$engardeResultsURL = "http://www.engarde-service.com/files/leonpaulfencingcentre/lpjslonfoil18/u13_boys/";
+$engardeResultsURL = "https://web.archive.org/web/20060512092653/http://www.britishfencing.com/me%20ind%20final%202005.htm";
 
 $e = new EngardeParser($engardeResultsURL);
 
